@@ -1,15 +1,16 @@
-from fastapi import APIRouter
-# Import your endpoint routers here later
-# from .endpoints import auth, agents, chats
+from fastapi import FastAPI
+from app.api.v1.api import api_router
 
-api_router = APIRouter(prefix="/v1")
+# This is the 'app' instance Uvicorn is looking for
+app = FastAPI(
+    title="AgConnect API",
+    description="API for creating and interacting with AI agents.",
+    version="1.0.0"
+)
 
-# Include your endpoint routers here
-# api_router.include_router(auth.router, tags=["Authentication"])
-# api_router.include_router(agents.router, tags=["Agents"])
-# api_router.include_router(chats.router, tags=["Chats"])
+# Include the versioned API router
+app.include_router(api_router, prefix="/api")
 
-@api_router.get("/health", tags=["Health"])
-def health_check():
-    """Simple health check endpoint."""
-    return {"status": "ok"}
+@app.get("/", tags=["Root"])
+def read_root():
+    return {"message": "Welcome to AgConnect API!"}

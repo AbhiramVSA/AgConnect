@@ -1,38 +1,28 @@
-version: '3.8'
-
 services:
-  # This is the service for your FastAPI application
   web:
-    build: . # Build the image using the Dockerfile in the current directory
-    # Override the Dockerfile's CMD for development
-    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Command now points to 'main:app' since main.py is in the root of the WORKDIR
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    # Mount the local 'app' directory to the container's '/app' directory
     volumes:
-      # Mount your local 'app' folder into the container
-      # This enables hot-reloading when you change your code
-      - ./app:/app/app
+      - ./app:/app
     ports:
-      # Map port 8000 on your local machine to port 8000 in the container
       - "8000:8000"
     env_file:
-      # Load environment variables from the .env file
       - .env
     depends_on:
-      - db # Make sure the database starts before the web app
+      - db
 
-  # This is the service for your PostgreSQL database (used by Supabase)
   db:
     image: postgres:15-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      # These variables should be in your .env file
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    env_file:
+      - .env
     ports:
-      # Expose the database port for local database tools (e.g., DBeaver)
       - "5432:5432"
 
 volumes:
-  # This creates a named volume to persist your database data
   postgres_data:
