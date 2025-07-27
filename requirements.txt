@@ -8,3 +8,6 @@ passlib[bcrypt]
 python-jose[cryptography]
 pydantic-ai
 pydantic[email]
+livekit-agents[openai]~=1.0
+livekit-plugins-noise-cancellation~=0.2
+python-dotenv
