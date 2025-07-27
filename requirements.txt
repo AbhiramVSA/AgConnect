@@ -7,3 +7,4 @@ supabase
 passlib[bcrypt]
 python-jose[cryptography]
 pydantic-ai
+pydantic[email]
