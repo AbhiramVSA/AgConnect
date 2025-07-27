@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-dotenv
+gunicorn
+# Add other dependencies like supabase, passlib, python-jose later
