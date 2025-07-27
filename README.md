@@ -24,10 +24,10 @@
     <img src="images/agconnect.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">AgConnect</h3>
 
   <p align="center">
-    project_description
+     AgConnect is an AI-powered calling platform that transforms simple text prompts into dynamic, conversational voice agents. Users can instantly design and deploy intelligent, human-like agents for any task, from automated customer support to personalized outbound calls, just by describing how they should speak and behave.
     <br />
     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
