@@ -1,16 +1,23 @@
 # app/api/v1/endpoints/agents.py
+import asyncio
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 from supabase import Client
 from gotrue import User
+from pydantic import BaseModel
 
 # Corrected imports to be direct and avoid loops
 from schemas.agent import AgentCreate, AgentPublic
 from crud import crud_agent
+from services import livekit_service
 from services.supabase_client import get_supabase_client
 from core.dependencies import get_current_user
 
 router = APIRouter()
+
+class JoinCallResponse(BaseModel):
+    token: str
+
 
 @router.post("/", response_model=AgentPublic, status_code=status.HTTP_201_CREATED)
 def create_new_agent(
@@ -36,3 +43,31 @@ def read_user_agents(
     """
     agents = crud_agent.get_user_agents(db=db, user=current_user)
     return agents
+
+@router.post("/{agent_id}/join-call", response_model=JoinCallResponse)
+async def join_agent_call(
+    agent_id: int,
+    db: Client = Depends(get_supabase_client),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Generates a LiveKit token for the user AND dispatches the AI agent to the call.
+    """
+    agent_record = db.table('agents').select('prompt').eq('id', agent_id).single().execute()
+    if not agent_record.data:
+        raise HTTPException(status_code=404, detail="Agent not found")
+    
+    agent_prompt = agent_record.data['prompt']
+
+    room_name = f"agent-call-{agent_id}"
+    participant_identity = str(current_user.id)
+
+    user_token = livekit_service.create_access_token(
+        room_name=room_name, participant_identity=participant_identity
+    )
+
+    await livekit_service.dispatch_agent_job(
+        room_name=room_name, agent_prompt=agent_prompt, agent_id=agent_id
+    )
+    
+    return {"token": user_token}

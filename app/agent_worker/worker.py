@@ -8,18 +8,11 @@ from livekit.plugins import openai, noise_cancellation
 logging.basicConfig(level=logging.INFO)
 
 class Assistant(Agent):
-    """
-    This is a simple agent that will use the instructions
-    passed to it from the job dispatch.
-    """
     def __init__(self, instructions: str):
         super().__init__(instructions=instructions)
 
 async def entrypoint(ctx: JobContext):
-    """
-    This entrypoint is called when the worker receives a job.
-    It creates and starts a real-time AI assistant in the room.
-    """
+    
     # Get the agent's instructions from the job data, with a fallback default.
     instructions = ctx.job.data or "You are a friendly and helpful voice assistant."
 
@@ -42,7 +35,7 @@ async def entrypoint(ctx: JobContext):
     # The agent will automatically start listening and responding.
     # We can send an initial message to get the conversation started.
     await session.generate_reply(
-        instructions="Greet the user and ask how you can help."
+        instructions=" Greet the user and ask how you can help."
     )
 
 

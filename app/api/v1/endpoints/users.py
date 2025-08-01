@@ -8,9 +8,7 @@ router = APIRouter()
 
 @router.get("/me", response_model=UserPublic)
 def read_users_me(current_user: User = Depends(get_current_user)):
-    """
-    Get the details of the currently authenticated user.
-    """
+    
     return {
         "id": hash(current_user.id), 
         "email": current_user.email

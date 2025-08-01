@@ -17,6 +17,12 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
+    LIVEKIT_API_KEY: str
+    LIVEKIT_API_SECRET: str
+    LIVEKIT_URL: str
+    DEEPGRAM_API_KEY: str
+    CARTESIA_API_KEY: str
+    
     
     class Config:
         env_file = ".env"
