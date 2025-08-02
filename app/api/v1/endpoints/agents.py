@@ -53,10 +53,22 @@ async def join_agent_call(
     """
     Generates a LiveKit token for the user AND dispatches the AI agent to the call.
     """
-    agent_record = db.table('agents').select('prompt').eq('id', agent_id).single().execute()
+    # 🔒 SECURITY FIX: Ensure the current user owns the agent.
+    agent_record = (
+        db.table('agents')
+        .select('prompt')
+        .eq('id', agent_id)
+        .eq('user_id', str(current_user.id)) # Check ownership
+        .single()
+        .execute()
+    )
+
     if not agent_record.data:
-        raise HTTPException(status_code=404, detail="Agent not found")
-    
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Agent not found or you do not have permission to access it."
+        )
+
     agent_prompt = agent_record.data['prompt']
 
     room_name = f"agent-call-{agent_id}"
@@ -66,6 +78,7 @@ async def join_agent_call(
         room_name=room_name, participant_identity=participant_identity
     )
 
+    # Dispatch the agent to the call
     await livekit_service.dispatch_agent_job(
         room_name=room_name, agent_prompt=agent_prompt, agent_id=agent_id
     )
