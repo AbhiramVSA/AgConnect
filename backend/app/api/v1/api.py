@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from .endpoints import auth, users, agents
+from app.api.v1.endpoints import auth, users, agents
 
-# This creates the router for version 1
+
 api_router = APIRouter(prefix="/v1")
 
 api_router.include_router(auth.router, prefix="/auth", tags=["Authentication"])

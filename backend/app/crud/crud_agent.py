@@ -1,13 +1,13 @@
 from supabase import Client
 from gotrue import User
-from schemas.agent import AgentCreate
+from app.schemas.agent import AgentCreate
 
 def create_agent(db: Client, *, agent_in: AgentCreate, user: User):
     """
     Create a new agent in the database.
     """
     agent_data = agent_in.model_dump()
-    agent_data['user_id'] = str(user.id) # Add the user's ID
+    agent_data['user_id'] = str(user.id) 
     
     response = db.table('agents').insert(agent_data).execute()
     return response.data[0]

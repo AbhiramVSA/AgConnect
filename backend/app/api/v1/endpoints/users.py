@@ -1,8 +1,8 @@
 # app/api/v1/endpoints/users.py
 from fastapi import APIRouter, Depends
 from gotrue import User
-from core.dependencies import get_current_user
-from schemas.user import UserPublic # We'll use this to format the response
+from app.core.dependencies import get_current_user
+from app.schemas.user import UserPublic 
 
 router = APIRouter()
 

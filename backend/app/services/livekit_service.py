@@ -2,7 +2,7 @@
 import livekit
 from livekit.api import LiveKitAPI, CreateRoomRequest
 from livekit.api.access_token import AccessToken
-from core.config import Settings
+from app.core.config import Settings
 
 settings = Settings()
 

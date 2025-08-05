@@ -2,8 +2,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from supabase import Client
-from core.config import settings
-from services.supabase_client import get_supabase_client
+from app.core.config import settings
+from app.services.supabase_client import get_supabase_client
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 

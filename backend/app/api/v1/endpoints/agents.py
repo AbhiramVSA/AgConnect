@@ -6,12 +6,11 @@ from supabase import Client
 from gotrue import User
 from pydantic import BaseModel
 
-# Corrected imports to be direct and avoid loops
-from schemas.agent import AgentCreate, AgentPublic
-from crud import crud_agent
-from services import livekit_service
-from services.supabase_client import get_supabase_client
-from core.dependencies import get_current_user
+from app.schemas.agent import AgentCreate, AgentPublic
+from app.crud import crud_agent
+from app.services import livekit_service
+from app.services.supabase_client import get_supabase_client
+from app.core.dependencies import get_current_user
 
 router = APIRouter()
 
@@ -53,7 +52,7 @@ async def join_agent_call(
     """
     Generates a LiveKit token for the user AND dispatches the AI agent to the call.
     """
-    # 🔒 SECURITY FIX: Ensure the current user owns the agent.
+ 
     agent_record = (
         db.table('agents')
         .select('prompt')

@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from supabase import Client, PostgrestAPIResponse
-from schemas.user import UserCreate
-from models.token import Token
-from crud import crud_user
-from services.supabase_client import get_supabase_client
+from app.schemas.user import UserCreate
+from app.models.token import Token
+from app.crud import crud_user
+from app.services.supabase_client import get_supabase_client
 
 router = APIRouter()
 
