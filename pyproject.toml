@@ -19,4 +19,6 @@ dependencies = [
     "livekit-plugins-deepgram>=1.2.2",
     "livekit-plugins-silero>=1.2.2",
     "livekit-plugins-cartesia>=1.2.2",
+    "alembic>=1.16.4",
+    "celery>=5.5.3",
 ]
